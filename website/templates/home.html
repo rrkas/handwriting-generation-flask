@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% block container %}
+
+<h2>Welcome to <b style="color: indigo"><i>TEXT -> HANDWRITING</i></b></h2>
+
+{% if not img_name %}
+    <form method="post" enctype="multipart/form-data" action="/">
+        <input type="file" name="file" autocomplete="off" required accept="text/plain"><br>
+        <input class="btn btn-info mt-3" type="submit" value="Submit">
+    </form>
+{% else %}
+    <img src="../static/output/{{ img_name }}.png" width="80%" class="border border-primary"><br>
+    <div class="mt-2">
+        <a  href="{{ url_for('download', filename=img_name) }}" class="btn btn-success">Download This</a>
+        <span class="ml-3"></span>
+        <a href="/" class="btn btn-primary">Generate Again</a>
+    </div>
+{% endif %}
+
+{% endblock %}

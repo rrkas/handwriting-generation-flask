@@ -1,0 +1,5 @@
+*.pyc
+venv
+.idea
+website/static/output
+pywhatkit_dbs.txt
