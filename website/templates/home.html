@@ -5,7 +5,14 @@
 
 {% if not img_name %}
     <form method="post" enctype="multipart/form-data" action="/">
-        <input type="file" name="file" autocomplete="off" required accept="text/plain"><br>
+        Choose Input Type:
+        <input id="radio_file" class="ml-5" type="radio" onclick="toggleFileText()" name="inputtype" value="file"> File
+        <input id="radio_text" class="ml-5" type="radio" onclick="toggleFileText()" name="inputtype" value="text" checked> Text
+        <br><br>
+
+        <input id="file" type="file" style="display: none;" name="file" autocomplete="off" accept="text/plain"><br>
+        <textarea id="text" name="text" cols="80" rows="10" style="resize: none;overflow-y: scroll;padding: 10px;">Type text here!</textarea><br>
+
         <input class="btn btn-info mt-3" type="submit" value="Submit">
     </form>
 {% else %}
@@ -16,5 +23,20 @@
         <a href="/" class="btn btn-primary">Generate Again</a>
     </div>
 {% endif %}
+
+
+<script type="text/javascript">
+
+function toggleFileText(){
+    if (document.getElementById('radio_file').checked) {
+        document.getElementById('text').style.display = 'none';
+        document.getElementById('file').style.display = 'block';
+    } else {
+        document.getElementById('text').style.display = 'block';
+        document.getElementById('file').style.display = 'none';
+    }
+}
+
+</script>
 
 {% endblock %}

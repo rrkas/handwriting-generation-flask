@@ -4,6 +4,7 @@ import uuid
 
 import pywhatkit as kit
 from flask import *
+from werkzeug.datastructures import FileStorage
 
 from website import app
 
@@ -21,10 +22,15 @@ def allowed_file(filename):
 def generate_signature(file):
     try:
         output_filename = str(uuid.uuid4().hex)
-        file.save(os.path.join(output_dir, output_filename + '.txt'))
-        with open(os.path.join(output_dir, output_filename + '.txt'), 'r') as f:
-            text = f.read()
-        os.remove(os.path.join(output_dir, output_filename + '.txt'))
+        if isinstance(file, FileStorage):
+            if os.path.exists('pywhatkit_dbs.txt'):
+                os.remove('pywhatkit_dbs.txt')
+            file.save(os.path.join(output_dir, output_filename + '.txt'))
+            with open(os.path.join(output_dir, output_filename + '.txt'), 'r') as f:
+                text = f.read()
+            os.remove(os.path.join(output_dir, output_filename + '.txt'))
+        else:
+            text = file
         kit.text_to_handwriting(
             string=text,
             rgb=(0, 0, 0),
@@ -39,16 +45,21 @@ def generate_signature(file):
 @app.route('/', methods=['POST', 'GET'])
 def home():
     if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file part!')
-            return redirect(request.url)
-        file = request.files.get('file')
-        if not allowed_file(file.filename):
-            flash('Invalid File!')
-            return redirect(request.url)
+        # print("request", request)
+        print("form", request.form)
+        if request.form.get('inputtype') == 'file':
+            if 'file' not in request.files:
+                flash('No file part!')
+                return redirect(request.url)
+            file = request.files.get('file')
+            if not allowed_file(file.filename):
+                flash('Invalid File!')
+                return redirect(request.url)
+        else:
+            file = request.form.get('text')
         img_name, valid = generate_signature(file)
         if valid:
-            flash('Images Converted Successfully!', 'success')
+            flash('Image Generated Successfully!', 'success')
         else:
             flash('Something went wrong! Please try again!!', 'error')
             return redirect(request.url)
