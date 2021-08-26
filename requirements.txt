@@ -19,6 +19,7 @@ PyScreeze==0.1.27
 PyTweening==1.0.3
 pywhatkit==5.1
 requests==2.26.0
+selenium==3.141.0
 soupsieve==2.2.1
 urllib3==1.26.6
 Werkzeug==2.0.1
