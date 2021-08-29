@@ -1,10 +1,19 @@
-if __name__ == '__main__':
-    from selenium import webdriver
-    browser = webdriver.Chrome('/usr/bin/chromedriver')
-    browser.get('https://google.com/')
+from website import app
 
-    from website import app
-    app.run(host='0.0.0.0', port=10002)
+if __name__ == '__main__':
+    # port = 10002
+    # from selenium import webdriver
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.add_argument("--no-sandbox")
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--disable-gpu")
+    # chrome_options.add_argument(f"--remote-debugging-port={port}")
+    #
+    # browser = webdriver.Chrome(chrome_options=chrome_options)
+    # browser.get('https://google.com/')
+
+
+    app.run(host='0.0.0.0', port=port)
 
 # allow inbound rules
 # sudo ufw allow 10002

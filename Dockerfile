@@ -1,8 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM python:3.7-alpine
 
-ENV CHROME_BIN="/usr/bin/chromium-browser"\
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
+ENV CHROME_BIN="/usr/bin/chromium-browser"
 
 #RUN set -x \
 #  && apk update \
@@ -23,9 +22,11 @@ ENV CHROME_BIN="/usr/bin/chromium-browser"\
 
 WORKDIR /code
 
-RUN apk add --no-cache gcc musl-dev linux-headers chromium
+ENV DISPLAY :0.0
 
-RUN apk add python3-dev py3-setuptools
+RUN apk add --no-cache gcc musl-dev linux-headers
+
+RUN apk add python3-dev py3-setuptools chromium chromium-chromedriver xvfb
 
 RUN apk add tiff-dev jpeg-dev openjpeg-dev zlib-dev freetype-dev lcms2-dev \
     libwebp-dev tcl-dev tk-dev harfbuzz-dev fribidi-dev libimagequant-dev \
@@ -35,8 +36,13 @@ COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
+ADD run.sh /run.sh
+RUN chmod a+x /run.sh
+
 EXPOSE 10002
 
 COPY . .
+
+CMD /run.sh
 
 CMD ["python", "script.py"]
