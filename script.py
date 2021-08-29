@@ -1,3 +1,7 @@
+import os
+
+os.environ['DISPLAY'] = ':0'
+
 from website import app
 
 if __name__ == '__main__':
@@ -11,7 +15,6 @@ if __name__ == '__main__':
     #
     # browser = webdriver.Chrome(chrome_options=chrome_options)
     # browser.get('https://google.com/')
-
 
     app.run(host='0.0.0.0', port=port)
 
